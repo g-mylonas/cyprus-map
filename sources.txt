@@ -1,0 +1,13 @@
+Πυκνότητα Πληθυσμού: https://hub.worldpop.org/geodata/listing?id=136, Cyprus 2025 Population
+
+Περιβάλλοντα Natura2000: https://www.data.gov.cy/en/dataset/natura2000-sites, αρχείο Natura2000_ETRS
+
+Δρόμοι, Νοσοκομεία, Αεροδρόμια, Λιμάνια: https://download.geofabrik.de/europe/cyprus.html, αρχείο cyprus-latest-free.shp.zip,
+
+Σεισμοί: 
+
+https://el.wikipedia.org/wiki/%CE%9A%CE%B1%CF%84%CE%AC%CE%BB%CE%BF%CE%B3%CE%BF%CF%82_%CF%83%CE%B5%CE%B9%CF%83%CE%BC%CF%8E%CE%BD_%CF%83%CF%84%CE%B7%CE%BD_%CE%9A%CF%8D%CF%80%CF%81%CE%BF
+
+https://data.gov.cy/el/resource/istorikoi-seismoi-teleytaioy-aiona
+
+Ρήγματα Σεισμών: https://github.com/GEMScienceTools/gem-global-active-faults
