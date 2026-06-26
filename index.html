@@ -176,7 +176,7 @@
       pointer-events: none;
       box-shadow: 0 4px 16px rgba(0,0,0,0.2);
       max-width: min(440px, calc(100vw - 32px));
-      white-space: normal;
+      white-space: pre-line;
       text-align: center;
       line-height: 1.55;
       overflow: hidden;
@@ -451,7 +451,7 @@
         }
       }).on('click', function(e) {
         L.DomEvent.stopPropagation(e);
-        showToast('🚫 Κατεχόμενη Περιοχή\nΠεριοχή υπό παράνομη κατοχή του τουρκικού στρατού από το 1974.', true);
+        showToast('Κατεχόμενη Περιοχή\nΠεριοχή υπό παράνομη κατοχή του τουρκικού στρατού από το 1974.', true);
       }).addTo(occupiedLayer);
     })
     .catch(function(e) { console.warn('Could not load occupied layer:', e); });
@@ -534,9 +534,8 @@
     t.style.opacity = '1';
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function() {
-      t.className = '';
       t.style.opacity = '0';
-      setTimeout(function() { t.style.display = 'none'; }, 300);
+      setTimeout(function() { t.style.display = 'none'; t.className = ''; }, 300);
     }, 3500);
   }
 
