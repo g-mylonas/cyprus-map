@@ -154,7 +154,7 @@
       overflow: hidden;
     }
     #legend-header {
-      display: none; /* hidden on desktop */
+      display: none;
     }
     #legend-body {
       padding: 12px 15px;
@@ -175,16 +175,17 @@
       border-radius: 10px; font-size: 13px;
       pointer-events: none;
       box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-      max-width: min(340px, calc(100vw - 32px));
+      max-width: min(440px, calc(100vw - 32px));
       white-space: normal;
       text-align: center;
-      line-height: 1.45;
+      line-height: 1.55;
       overflow: hidden;
       display: none;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
     #toast.show { display: block; opacity: 1; }
+    #toast.red { background: #991b1b; }
 
     @media (max-width: 600px) {
       #toast {
@@ -199,7 +200,6 @@
        ════════════════════════════════ */
     @media (max-width: 600px) {
 
-      /* Τίτλος — κάτω κέντρο */
       #map-title {
         max-width: 90vw;
         top: auto;
@@ -212,7 +212,6 @@
       #map-title .line1 { font-size: 11px; }
       #map-title .line2 { display: none; }
 
-      /* Scale bar — πάνω από τον τίτλο, χωρίς box */
       #scale-bar {
         display: flex;
         bottom: 46px;
@@ -234,7 +233,6 @@
       }
       #scale-label { color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
-      /* Panel layers — πάνω δεξιά, ίδιο width με υπόμνημα */
       #panel { top: 10px; right: 10px; width: 185px; }
       .layer-name { font-size: 12px; }
       #panel-header { align-items: center; padding: 10px 13px; }
@@ -243,7 +241,6 @@
       #reset-btn { display: none; }
       #panel-footer { justify-content: center; padding: 7px 13px; }
 
-      /* Υπόμνημα — πάνω αριστερά, ίδιο width με panel */
       #legend {
         display: block;
         top: 10px;
@@ -279,7 +276,6 @@
         padding: 10px 13px;
       }
 
-      /* Logo — κάτω αριστερά */
       #logo {
         width: 52px;
         height: 52px;
@@ -288,7 +284,6 @@
         bottom: 12px;
       }
 
-      /* Πυξίδα — κάτω δεξιά */
       #compass {
         bottom: 12px;
         right: 10px;
@@ -296,12 +291,11 @@
         height: 52px;
       }
 
-      /* Info panel — full width κάτω */
       #info-panel {
         left: 10px;
         right: 10px;
         width: auto;
-        bottom: 74px; /* πάνω από logo/πυξίδα */
+        bottom: 74px;
       }
     }
   </style>
@@ -316,7 +310,7 @@
   <div class="line2">Ρήγματα, Πληθυσμός, Δομική Τρωτότητα και Περιβαλλοντικές Ζώνες</div>
 </div>
 
-<!-- Layer Panel (πάνω δεξιά) -->
+<!-- Layer Panel -->
 <div id="panel">
   <div id="panel-header" onclick="togglePanel()">
     <div>
@@ -370,7 +364,7 @@
   <div id="info-body"></div>
 </div>
 
-<!-- Υπόμνημα (πάνω αριστερά στο mobile, κάτω αριστερά στο desktop) -->
+<!-- Legend -->
 <div id="legend">
   <div id="legend-header" onclick="toggleLegend()">
     <span>Υπόμνημα</span>
@@ -392,7 +386,7 @@
 
 <div id="toast"></div>
 
-<!-- Πυξίδα -->
+<!-- Compass -->
 <div id="compass">
   <svg width="46" height="46" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="14" stroke="#e2e8f0" stroke-width="1.5"/>
@@ -457,7 +451,7 @@
         }
       }).on('click', function(e) {
         L.DomEvent.stopPropagation(e);
-        showToast('Περιοχή υπό παράνομη κατοχή του τουρκικού στρατού από το 1974');
+        showToast('🚫 Κατεχόμενη Περιοχή\nΠεριοχή υπό παράνομη κατοχή του τουρκικού στρατού από το 1974.', true);
       }).addTo(occupiedLayer);
     })
     .catch(function(e) { console.warn('Could not load occupied layer:', e); });
@@ -511,7 +505,7 @@
   }
 
   // ── Legend toggle (mobile collapsible) ──
-  var legendOpen = false; // κλειστό by default στο mobile
+  var legendOpen = false;
   function toggleLegend() {
     legendOpen = !legendOpen;
     document.getElementById('legend-body').style.display = legendOpen ? '' : 'none';
@@ -519,7 +513,6 @@
     icon.classList.toggle('rotated', !legendOpen);
   }
 
-  // Αρχικοποίηση: στο mobile κλειστό, στο desktop πάντα ανοιχτό
   (function() {
     if (window.innerWidth <= 600) {
       document.getElementById('legend-body').style.display = 'none';
@@ -532,15 +525,16 @@
 
   // ── Toast ──
   var toastTimer;
-  function showToast(msg) {
+  function showToast(msg, isRed) {
     var t = document.getElementById('toast');
-    t.textContent = msg;
+    t.innerHTML = msg.replace(/\n/g, '<br>');
+    t.className = isRed ? 'red show' : 'show';
     t.style.display = 'block';
-    // force reflow so transition fires
     void t.offsetWidth;
     t.style.opacity = '1';
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function() {
+      t.className = '';
       t.style.opacity = '0';
       setTimeout(function() { t.style.display = 'none'; }, 300);
     }, 3500);
@@ -553,7 +547,7 @@
     if (cb.checked) {
       if (activeIds.size >= 3) {
         cb.checked = false;
-        showToast('Μέγιστο 3 layers ταυτόχρονα. Απενεργοποίησε ένα πρώτα.');
+        showToast('Μέγιστο 3 layers ταυτόχρονα. Απενεργοποίησε ένα πρώτα.', false);
         return;
       }
       if (leafletLayers[id]) { leafletLayers[id].addTo(map); activeIds.add(id); if (item) item.classList.add('active'); }
@@ -573,7 +567,6 @@
     });
   }
 
-  // ── Δεδομένα CYSTAT Απογραφή 2021 ──
   var districtRiskData = {
     'Λευκωσία':   { pre1993: 91675,  total: 162930, pct: 56.3 },
     'Λεμεσός':    { pre1993: 77091,  total: 132281, pct: 58.3 },
@@ -589,10 +582,6 @@
     if (pct >= 50) return '#f97316';
     return '#fbbf24';
   }
-
-  var buildingColors = { high:'#ba7517', medium:'#ef9f27', low:'#639922' };
-  var riskBadge = { high:'Υψηλή επικινδυνότητα', medium:'Μέτρια επικινδυνότητα', low:'Χαμηλή επικινδυνότητα' };
-  var infraLabel = { hospital:'Νοσοκομείο', school:'Σχολείο', dam:'Φράγμα', road:'Αυτοκινητόδρομος' };
 
   function onFeatureClick(e, title, badge, badgeClass, rows) {
     L.DomEvent.stopPropagation(e);
