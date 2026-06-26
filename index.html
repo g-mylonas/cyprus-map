@@ -51,25 +51,26 @@
       padding: 5px 10px; cursor: pointer; white-space: nowrap; transition: background 0.15s;
     }
     #reset-btn:hover { background: #e2e8f0; }
+
+    /* ── Map Title ── */
     #map-title {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
       z-index: 1000; text-align: center; pointer-events: none;
       background: white;
       box-shadow: 0 4px 20px rgba(0,0,0,0.10);
       padding: 10px 20px; border-radius: 12px;
-      width: 340px;
+      max-width: 420px;
     }
     #map-title .line1 {
-      font-size: clamp(11px, 2vw, 14px); font-weight: 600;
-      letter-spacing: 0.2px; line-height: 1.4; color: #0f172a;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.2px; line-height: 1.4;
+      color: #0f172a;
     }
     #map-title .line2 {
-      font-size: clamp(9px, 1.5vw, 11px); font-weight: 400;
-      margin-top: 3px; line-height: 1.4; color: #475569;
+      font-size: 11px; font-weight: 400; margin-top: 3px; line-height: 1.4;
+      color: #475569;
     }
-    @media (max-width: 600px) {
-      #map-title { width: 260px; bottom: 16px; }
-    }
+
+    /* ── Compass ── */
     #compass {
       position: fixed; bottom: 88px; right: 16px; z-index: 1002;
       width: 64px; height: 64px;
@@ -77,12 +78,12 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.10);
       display: flex; align-items: center; justify-content: center;
     }
-    @media (max-width: 600px) {
-      #compass { bottom: 76px; right: 10px; width: 54px; height: 54px; }
-    }
+
     .leaflet-bottom.leaflet-left {
       padding-bottom: 220px;
     }
+
+    /* ── Scale Bar ── */
     #scale-bar {
       position: fixed; bottom: 28px; right: 16px; z-index: 1002;
       background: white; border-radius: 10px; padding: 7px 12px;
@@ -99,20 +100,16 @@
       font-size: 10px; font-weight: 600; color: #0f172a;
       font-family: 'Noto Sans', sans-serif;
     }
-    @media (max-width: 600px) {
-      #scale-bar { display: none; }
-    }
+
+    /* ── Logo ── */
     #logo {
       position: fixed; top: 16px; left: 16px; z-index: 1000;
       width: 90px; height: 90px;
       object-fit: contain;
       pointer-events: none;
     }
-    @media (max-width: 600px) {
-      #logo { width: 65px; height: 65px; top: 10px; left: 10px; }
-    }
 
-    /* ── Info Panel (bottom-right) ── */
+    /* ── Info Panel ── */
     #info-panel {
       position: fixed; bottom: 28px; right: 16px; z-index: 1001;
       width: 290px; background: white; border-radius: 14px;
@@ -149,11 +146,18 @@
     .badge-env    { background: #d1fae5; color: #065f46; }
     .badge-pop    { background: #dbeafe; color: #1e40af; }
 
-    /* ── Legend ── */
+    /* ── Legend (desktop) ── */
     #legend {
       position: fixed; bottom: 28px; left: 16px; z-index: 1000;
-      background: white; border-radius: 12px; padding: 12px 15px;
+      background: white; border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.10); min-width: 168px;
+      overflow: hidden;
+    }
+    #legend-header {
+      display: none; /* hidden on desktop */
+    }
+    #legend-body {
+      padding: 12px 15px;
     }
     #legend h4 { font-size: 9px; font-weight: 600; color: #94a3b8; margin-bottom: 9px; text-transform: uppercase; letter-spacing: 1px; }
     .leg { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; color: #475569; font-size: 11.5px; }
@@ -175,12 +179,98 @@
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* ── Mobile ── */
+    /* ════════════════════════════════
+       MOBILE  (max-width: 600px)
+       ════════════════════════════════ */
     @media (max-width: 600px) {
-      #panel { top: 10px; right: 10px; width: 195px; }
+
+      /* Τίτλος — πάνω κέντρο */
+      #map-title {
+        max-width: 190px;
+        top: 10px;
+        /* αφήνει χώρο για scale bar από κάτω */
+      }
+      #map-title .line1 { font-size: 11px; }
+      #map-title .line2 { font-size: 9px; }
+
+      /* Scale bar — κάτω από τον τίτλο, κεντραρισμένο */
+      #scale-bar {
+        display: flex;
+        top: 72px;
+        bottom: auto;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px 10px;
+        min-width: 70px;
+        border-radius: 8px;
+      }
+      #scale-line { width: 60px; }
+
+      /* Panel layers — πάνω δεξιά, αμετάβλητο */
+      #panel { top: 10px; right: 10px; width: 185px; }
       .layer-name { font-size: 12px; }
-      #legend { display: none; }
-      #info-panel { left: 10px; right: 10px; width: auto; bottom: 16px; }
+
+      /* Υπόμνημα — πάνω αριστερά, collapsible */
+      #legend {
+        display: block;
+        top: 10px;
+        left: 10px;
+        bottom: auto;
+        right: auto;
+        min-width: 0;
+        width: auto;
+        border-radius: 12px;
+      }
+      #legend-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 13px;
+        background: #0f172a;
+        color: white;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 12px 12px 0 0;
+        font-size: 12px;
+        font-weight: 600;
+        gap: 10px;
+      }
+      #legend-toggle-icon {
+        font-size: 9px;
+        opacity: 0.6;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      #legend-toggle-icon.rotated { transform: rotate(-90deg); }
+      #legend-body {
+        padding: 10px 13px;
+      }
+
+      /* Logo — κάτω αριστερά */
+      #logo {
+        width: 52px;
+        height: 52px;
+        top: auto;
+        left: 10px;
+        bottom: 12px;
+      }
+
+      /* Πυξίδα — κάτω δεξιά */
+      #compass {
+        bottom: 12px;
+        right: 10px;
+        width: 52px;
+        height: 52px;
+      }
+
+      /* Info panel — full width κάτω */
+      #info-panel {
+        left: 10px;
+        right: 10px;
+        width: auto;
+        bottom: 74px; /* πάνω από logo/πυξίδα */
+      }
     }
   </style>
 </head>
@@ -188,11 +278,13 @@
 
 <div id="map"></div>
 <img id="logo" src="data/logo_map.png" alt="Logo">
+
 <div id="map-title">
   <div class="line1">Χάρτης Σεισμικού Κινδύνου Κύπρου</div>
   <div class="line2">Ρήγματα, Πληθυσμός, Δομική Τρωτότητα και Περιβαλλοντικές Ζώνες</div>
 </div>
 
+<!-- Layer Panel (πάνω δεξιά) -->
 <div id="panel">
   <div id="panel-header" onclick="togglePanel()">
     <div>
@@ -234,6 +326,7 @@
   </div>
 </div>
 
+<!-- Info Panel -->
 <div id="info-panel">
   <div id="info-header">
     <div>
@@ -245,37 +338,43 @@
   <div id="info-body"></div>
 </div>
 
+<!-- Υπόμνημα (πάνω αριστερά στο mobile, κάτω αριστερά στο desktop) -->
 <div id="legend">
-  <h4>Υπόμνημα</h4>
-  <div class="leg"><div class="leg-line"></div><span>Τεκτονικά ρήγματα</span></div>
-  <div class="leg"><div class="leg-circle" style="background:#e24b4a;opacity:.8;"></div><span>Επίκεντρα σεισμών</span></div>
-  <div class="leg"><div class="leg-circle" style="background:#378add;opacity:.5;"></div><span>Πυκνότητα πληθυσμού</span></div>
-  <div class="leg"><div class="leg-icon" style="background:#1d9e75;">H</div><span>Νοσοκομείο</span></div>
-  <div class="leg"><div class="leg-icon" style="background:#a10323;">A</div><span>Αεροδρόμιο</span></div>
-  <div class="leg"><div class="leg-icon" style="background:#85900e;">Λ</div><span>Λιμάνι</span></div>
-  <div class="leg"><div class="leg-icon" style="background:#185fa5;">Φ</div><span>Φράγμα</span></div>
-  <div class="leg"><div class="leg-icon" style="background:#FF6A00;">Σ</div><span>Σχολείο</span></div>
-  <div class="leg"><div class="leg-square" style="background:#0f6e56;opacity:.4;"></div><span>Natura 2000</span></div>
+  <div id="legend-header" onclick="toggleLegend()">
+    <span>Υπόμνημα</span>
+    <span id="legend-toggle-icon">▼</span>
+  </div>
+  <div id="legend-body">
+    <h4>Υπόμνημα</h4>
+    <div class="leg"><div class="leg-line"></div><span>Τεκτονικά ρήγματα</span></div>
+    <div class="leg"><div class="leg-circle" style="background:#e24b4a;opacity:.8;"></div><span>Επίκεντρα σεισμών</span></div>
+    <div class="leg"><div class="leg-circle" style="background:#378add;opacity:.5;"></div><span>Πυκνότητα πληθυσμού</span></div>
+    <div class="leg"><div class="leg-icon" style="background:#1d9e75;">H</div><span>Νοσοκομείο</span></div>
+    <div class="leg"><div class="leg-icon" style="background:#a10323;">A</div><span>Αεροδρόμιο</span></div>
+    <div class="leg"><div class="leg-icon" style="background:#85900e;">Λ</div><span>Λιμάνι</span></div>
+    <div class="leg"><div class="leg-icon" style="background:#185fa5;">Φ</div><span>Φράγμα</span></div>
+    <div class="leg"><div class="leg-icon" style="background:#FF6A00;">Σ</div><span>Σχολείο</span></div>
+    <div class="leg"><div class="leg-square" style="background:#0f6e56;opacity:.4;"></div><span>Natura 2000</span></div>
+  </div>
 </div>
 
 <div id="toast"></div>
+
+<!-- Πυξίδα -->
 <div id="compass">
   <svg width="46" height="46" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="14" stroke="#e2e8f0" stroke-width="1.5"/>
-    <!-- Βέλος Βορρά (κόκκινο) -->
     <polygon points="16,4 13,16 16,14 19,16" fill="#e24b4a"/>
-    <!-- Βέλος Νότου (σκούρο) -->
     <polygon points="16,28 13,16 16,18 19,16" fill="#0f172a"/>
-    <!-- Κέντρο -->
     <circle cx="16" cy="16" r="2" fill="#0f172a"/>
-    <!-- Γράμμα Ν -->
     <text x="16" y="11.5" text-anchor="middle" font-size="5" font-weight="700"
           font-family="Noto Sans, sans-serif" fill="#e24b4a">N</text>
-    <!-- Γράμμα S -->
     <text x="16" y="30" text-anchor="middle" font-size="5" font-weight="700"
           font-family="Noto Sans, sans-serif" fill="#0f172a">S</text>
   </svg>
 </div>
+
+<!-- Scale Bar -->
 <div id="scale-bar">
   <div id="scale-line"></div>
   <div id="scale-label">— km</div>
@@ -290,6 +389,7 @@
     maxZoom: 19
   }).addTo(map);
 
+  // ── Scale Bar ──
   function updateScale() {
     var center = map.getCenter();
     var bounds = map.getBounds();
@@ -298,7 +398,6 @@
     var mPerPx = mapWidthM / mapWidthPx;
     var targetPx = 80;
     var targetM = mPerPx * targetPx;
-
     var nice, label;
     if (targetM >= 1000) {
       nice = Math.round(targetM / 1000);
@@ -311,30 +410,25 @@
     document.getElementById('scale-line').style.width = Math.round(actualPx) + 'px';
     document.getElementById('scale-label').textContent = label;
   }
-
   map.on('moveend zoomend', updateScale);
   updateScale();
 
-
   // ── Occupied Cyprus ──
-
-var occupiedLayer = L.layerGroup().addTo(map);
-
-fetch('data/occupied.geojson')
-  .then(function(r) { if (!r.ok) throw new Error('load error'); return r.json(); })
-  .then(function(data) {
-    L.geoJSON(data, {
-      style: {
-        color:'#dc2626', fillColor:'#ef4444', fillOpacity:0.45,
-        weight:2, opacity:0.5, dashArray:'7,5'
-      }
-    }).on('click', function(e) {
-      L.DomEvent.stopPropagation(e);
-      showToast('Περιοχή υπό παράνομη κατοχή του τουρκικού στρατού από το 1974');
-    }).addTo(occupiedLayer);
-  })
-  .catch(function(e) { console.warn('Could not load occupied layer:', e); });
-
+  var occupiedLayer = L.layerGroup().addTo(map);
+  fetch('data/occupied.geojson')
+    .then(function(r) { if (!r.ok) throw new Error('load error'); return r.json(); })
+    .then(function(data) {
+      L.geoJSON(data, {
+        style: {
+          color:'#dc2626', fillColor:'#ef4444', fillOpacity:0.45,
+          weight:2, opacity:0.5, dashArray:'7,5'
+        }
+      }).on('click', function(e) {
+        L.DomEvent.stopPropagation(e);
+        showToast('Περιοχή υπό παράνομη κατοχή του τουρκικού στρατού από το 1974');
+      }).addTo(occupiedLayer);
+    })
+    .catch(function(e) { console.warn('Could not load occupied layer:', e); });
 
   // ── Info Panel ──
   function showInfo(title, badge, badgeClass, rows) {
@@ -373,6 +467,7 @@ fetch('data/occupied.geojson')
 
   function resetView() { map.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM, { duration: 1.2 }); }
 
+  // ── Panel toggle ──
   var panelOpen = true;
   function togglePanel() {
     panelOpen = !panelOpen;
@@ -383,6 +478,23 @@ fetch('data/occupied.geojson')
     icon.classList.toggle('rotated', !panelOpen);
   }
 
+  // ── Legend toggle (mobile collapsible) ──
+  var legendOpen = false; // κλειστό by default στο mobile
+  function toggleLegend() {
+    legendOpen = !legendOpen;
+    document.getElementById('legend-body').style.display = legendOpen ? '' : 'none';
+    var icon = document.getElementById('legend-toggle-icon');
+    icon.classList.toggle('rotated', !legendOpen);
+  }
+
+  // Αρχικοποίηση: στο mobile κλειστό, στο desktop πάντα ανοιχτό
+  (function() {
+    if (window.innerWidth <= 600) {
+      document.getElementById('legend-body').style.display = 'none';
+    }
+  })();
+
+  // ── Toast ──
   var toastTimer;
   function showToast(msg) {
     var t = document.getElementById('toast');
@@ -419,7 +531,7 @@ fetch('data/occupied.geojson')
     });
   }
 
-  // ── Δεδομένα CYSTAT Απογραφή 2021: % κατοικιών πριν το 1993 ανά επαρχία ──
+  // ── Δεδομένα CYSTAT Απογραφή 2021 ──
   var districtRiskData = {
     'Λευκωσία':   { pre1993: 91675,  total: 162930, pct: 56.3 },
     'Λεμεσός':    { pre1993: 77091,  total: 132281, pct: 58.3 },
@@ -428,7 +540,6 @@ fetch('data/occupied.geojson')
     'Αμμόχωστος': { pre1993: 17539,  total: 40115,  pct: 43.7 }
   };
 
-  // Choropleth χρώμα βάσει ποσοστού
   function districtFillColor(pct) {
     if (pct >= 58) return '#7f1d1d';
     if (pct >= 56) return '#b91c1c';
@@ -436,7 +547,6 @@ fetch('data/occupied.geojson')
     if (pct >= 50) return '#f97316';
     return '#fbbf24';
   }
-
 
   var buildingColors = { high:'#ba7517', medium:'#ef9f27', low:'#639922' };
   var riskBadge = { high:'Υψηλή επικινδυνότητα', medium:'Μέτρια επικινδυνότητα', low:'Χαμηλή επικινδυνότητα' };
@@ -483,11 +593,10 @@ fetch('data/occupied.geojson')
         var latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
         var mag = p.magnitude || 4;
 
-        // Color scale: light red (low) → deep red (high), range ~4.5–7.5
         var t = Math.min(Math.max((mag - 4.5) / 3.0, 0), 1);
-        var r = Math.round(127 + (1 - t) * 128); // 255 → 127
-        var g = Math.round((1 - t) * 100);        // 100 → 0
-        var b = Math.round((1 - t) * 100);        // 100 → 0
+        var r = Math.round(127 + (1 - t) * 128);
+        var g = Math.round((1 - t) * 100);
+        var b = Math.round((1 - t) * 100);
         var fillColor = 'rgb(' + r + ',' + g + ',' + b + ')';
 
         var rows = [];
@@ -547,12 +656,8 @@ fetch('data/occupied.geojson')
               'Πηγή: CYSTAT Απογραφή 2021'
             ]);
           });
-          layer.on('mouseover', function() {
-            layer.setStyle({ fillOpacity: 0.75, weight: 2.5 });
-          });
-          layer.on('mouseout', function() {
-            layer.setStyle({ fillOpacity: 0.55, weight: 1.5 });
-          });
+          layer.on('mouseover', function() { layer.setStyle({ fillOpacity: 0.75, weight: 2.5 }); });
+          layer.on('mouseout',  function() { layer.setStyle({ fillOpacity: 0.55, weight: 1.5 }); });
         }
       });
     }
@@ -572,10 +677,10 @@ fetch('data/occupied.geojson')
         if (fclass === 'motorway' || fclass === 'motorway_link') return 'Αυτοκινητόδρομος';
         if (fclass === 'trunk' || fclass === 'trunk_link') return 'Εθνική Οδός';
         if (fclass === 'hospital') return 'Νοσοκομείο';
-        if (fclass === 'airport') return 'Αεροδρόμιο';
-        if (fclass === 'port') return 'Λιμάνι';
-        if (fclass === 'dam') return 'Φράγμα';
-        if (fclass === 'school') return 'Σχολείο';
+        if (fclass === 'airport')  return 'Αεροδρόμιο';
+        if (fclass === 'port')     return 'Λιμάνι';
+        if (fclass === 'dam')      return 'Φράγμα';
+        if (fclass === 'school')   return 'Σχολείο';
         return 'Πρωτεύουσα Οδός';
       }
       var pointFclasses = { hospital: true, airport: true, port: true, dam: true, school: true };
@@ -626,9 +731,9 @@ fetch('data/occupied.geojson')
   }
 
   var files = {
-    seismic:'data/seismic.geojson',
-    infra:'data/infrastructure.geojson',
-    environment:'data/environment.geojson'
+    seismic:     'data/seismic.geojson',
+    infra:       'data/infrastructure.geojson',
+    environment: 'data/environment.geojson'
   };
 
   Object.entries(files).forEach(function(entry) {
@@ -639,10 +744,8 @@ fetch('data/occupied.geojson')
       .catch(function(e) { console.warn('Could not load layer:', id, e); leafletLayers[id] = L.layerGroup(); });
   });
 
-  // population is an image overlay, not GeoJSON
   leafletLayers['population'] = buildLayer('population', null);
 
-  // buildings layer — φορτώνει εξωτερικό GeoJSON
   fetch('data/buildings.geojson')
     .then(function(r) { if (!r.ok) throw new Error('load error'); return r.json(); })
     .then(function(data) { leafletLayers['buildings'] = buildLayer('buildings', data); })
